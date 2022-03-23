@@ -8,7 +8,7 @@ const Item = (props) => {
   const [modalInfo, setModalInfo] = useRecoilState(modalState);
   const favorites = useRecoilValue(favoritesState);
   const openModal = () => {
-    setModalInfo({ isOpenModal: true, movie });
+    setModalInfo({ isOpen: true, movie });
   };
   return (
     <div className="item">
