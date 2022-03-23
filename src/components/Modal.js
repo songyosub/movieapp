@@ -1,15 +1,16 @@
 import React, { useState, useEffect } from "react";
 import { useRecoilState } from "recoil";
 
-import { favoritesState, modalState } from "../state/Atoms";
+import { favoritesState } from "../state/Atoms";
 import "../styles/Modal.css";
 
+import useModal from "../hooks/useModal";
 
 const Modal = () => {
   const [favorites, setFavorites] = useRecoilState(favoritesState);
-  const [modalInfo, setModalInfo] = useRecoilState(modalState);
   const [isFavorite, setIsFavorite] = useState(false);
 
+  const { closeModal, modalInfo } = useModal();
   const { isOpen, movie } = modalInfo;
 
   useEffect(() => {
@@ -18,7 +19,7 @@ const Modal = () => {
   }, [favorites, movie]);
 
   const handleConfirm = () => {
-    handleClose();
+    closeModal();
     if (isFavorite) {
       handleRemoveFavorite();
     } else {
@@ -35,7 +36,7 @@ const Modal = () => {
   }
 
   const handleClose = () => {
-    setModalInfo((prev) => ({ ...prev, isOpen: false }));
+    closeModal();
   };
 
   return (
