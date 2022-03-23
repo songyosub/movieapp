@@ -1,45 +1,53 @@
-import React, { useRef } from "react";
-import "../styles/Modal.css";
+import React, { useState, useEffect } from "react";
+import { useRecoilState } from "recoil";
 
 import { favoritesState, modalState } from "../state/Atoms";
-import { useRecoilValue, useRecoilState } from "recoil";
+import "../styles/Modal.css";
+
 
 const Modal = () => {
   const [favorites, setFavorites] = useRecoilState(favoritesState);
   const [modalInfo, setModalInfo] = useRecoilState(modalState);
-  const { isOpenModal, movie } = modalInfo;
-  const isFav = useRef(false);
-  const closeModal = (e) => {
-    e.preventDefault();
-    setModalInfo((prev) => ({ ...prev, isOpenModal: false }));
-  };
+  const [isFavorite, setIsFavorite] = useState(false);
 
-  if (movie) {
-    isFav.current = favorites.find((fav) => fav.imdbID === movie.imdbID)
-      ? true
-      : false;
+  const { isOpen, movie } = modalInfo;
+
+  useEffect(() => {
+    const isFavorite = !!favorites.find((fav) => fav.imdbID === movie.imdbID);
+    setIsFavorite(isFavorite);
+  }, [favorites, movie]);
+
+  const handleConfirm = () => {
+    handleClose();
+    if (isFavorite) {
+      handleRemoveFavorite();
+    } else {
+      handleAddFavorite();
+    }
   }
 
-  const favoriteHandler = (e) => {
-    e.preventDefault();
-    if (isFav.current) {
-      setFavorites(favorites.filter((fav) => fav.imdbID !== movie.imdbID));
-      setModalInfo((prev) => ({ ...prev, isOpenModal: false }));
-    } else {
-      setFavorites((prev) => prev.concat(movie));
-      setModalInfo((prev) => ({ ...prev, isOpenModal: false }));
-    }
+  const handleAddFavorite = () => {
+    setFavorites((prev) => prev.concat(movie));
+  }
+
+  const handleRemoveFavorite = () => {
+    setFavorites(favorites.filter((fav) => fav.imdbID !== movie.imdbID));
+  }
+
+  const handleClose = () => {
+    setModalInfo((prev) => ({ ...prev, isOpen: false }));
   };
+
   return (
-    <div className={isOpenModal ? "openModal modal" : "modal"}>
-      {isOpenModal ? (
+    <div className={isOpen ? "openModal modal" : "modal"}>
+      {isOpen ? (
         <section>
           <main>{movie.Title}</main>
           <footer>
-            <button className="close" onClick={favoriteHandler}>
-              {isFav.current ? "즐겨찾기 제거" : "즐겨찾기 추가"}
+            <button className="close" onClick={handleConfirm}>
+              {isFavorite ? "즐겨찾기 제거" : "즐겨찾기 추가"}
             </button>
-            <button className="close" onClick={closeModal}>
+            <button className="close" onClick={handleClose}>
               취소
             </button>
           </footer>
