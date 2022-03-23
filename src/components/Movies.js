@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useFetchMoreItems, allItems } from "../state/Selector";
 import { inputState } from "../state/Atoms";
 import { useRecoilValue, useRecoilState } from "recoil";
-import Collection from "./Collection";
+import MovieCollection from "./MovieCollection";
 
 import "../styles/Movies.css";
 const Movies = () => {
@@ -38,13 +38,13 @@ const Movies = () => {
         (itemLoadable, index) =>
           ({
             hasValue: (
-              <Collection item={itemLoadable.contents} key={"col-" + index} />
+              <MovieCollection item={itemLoadable.contents} key={"col-" + index} />
             ),
             hasError: <div key={"col-" + index}>ERROR</div>,
             loading: <div key={"col-" + index}>LOADING~!</div>,
           }[itemLoadable.state])
       )}
-      {inputVal ? <div ref={setTarget}></div> : ""}
+      {inputVal && <div ref={setTarget} />}
     </div>
   );
 };

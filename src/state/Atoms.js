@@ -1,30 +1,34 @@
 import { atom } from "recoil";
 
-let inputState = atom({
+const inputState = atom({
   key: "input",
   default: "",
 });
 
-let moviesState = atom({
+const moviesState = atom({
   key: "movieList",
   default: [],
 });
 
-let pageState = atom({
+const pageState = atom({
   key: "page",
   default: 1,
 });
 
-let modalState = atom({
+const modalState = atom({
   key: "modal",
-  default: {},
+  default: {
+    isOpen: false,
+    movie: {}
+  },
 });
 
-let favoritesState = atom({
+const favoritesState = atom({
   key: "favorites",
   default: [],
 });
-let currentPageInternal = atom({
+
+const currentPageInternal = atom({
   key: "currentPage",
   default: 0,
 });
