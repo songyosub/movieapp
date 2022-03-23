@@ -1,19 +1,22 @@
 import React from "react";
 import "../styles/Item.css";
 
-import { modalState, favoritesState } from "../state/Atoms";
-import { useRecoilValue, useRecoilState } from "recoil";
+import { favoritesState } from "../state/Atoms";
+import { useRecoilValue } from "recoil";
+import useModal from '../hooks/useModal';
 const Item = (props) => {
   const { movie } = props;
-  const [modalInfo, setModalInfo] = useRecoilState(modalState);
+  const { openModal } = useModal();
   const favorites = useRecoilValue(favoritesState);
-  const openModal = () => {
-    setModalInfo({ isOpen: true, movie });
+
+  const handleOpenModal = () => {
+    openModal(movie);
   };
+
   return (
     <div className="item">
       <img src={movie.Poster} alt={movie.Title} />
-      <div className="info" onClick={openModal}>
+      <div className="info" onClick={handleOpenModal}>
         <span className="title">
           {favorites.find((fav) => fav.imdbID === movie.imdbID) ? "[★]" : ""}
           {movie.Title}
