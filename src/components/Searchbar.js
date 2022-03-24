@@ -11,7 +11,7 @@ const Searchbar = () => {
   const searchInput = useRef();
   const fetchMoreItems = useFetchMoreItems();
 
-  const clickHandler = (e) => {
+  const handleClick = () => {
     resetPage();
     let target = searchInput.current.value;
     if (target) {
@@ -20,6 +20,12 @@ const Searchbar = () => {
     }
   };
 
+  const handleKeyDown = (e) => {
+    if (e.key === 'Enter') {
+      handleClick();
+    }
+  }
+
   return (
     <nav className="searchbar">
       <input
@@ -27,8 +33,9 @@ const Searchbar = () => {
         type="text"
         ref={searchInput}
         placeholder="검색어를 입력해주세요."
+        onKeyDown={handleKeyDown}
       ></input>
-      <button className="search-button" onClick={clickHandler}>
+      <button className="search-button" onClick={handleClick}>
         검색
       </button>
     </nav>

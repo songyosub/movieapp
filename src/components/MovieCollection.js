@@ -9,15 +9,14 @@ const MovieCollection = (props) => {
   const { item } = props;
   const favorites = useRecoilValue(favoriteSelector);
 
-  const movies = item.data.Search;
-  const refinedMovies = movies
-    ? movies.map((movie) => {
-        return {
-          ...movie,
-          isFavorite: favorites.find((fav) => fav.imdbID === movie.imdbID),
-        };
-      })
-    : [];
+  const movies = item.data.Search || [];
+  const refinedMovies =  movies.map((movie) => {
+    return {
+      ...movie,
+      isFavorite: favorites.find((fav) => fav.imdbID === movie.imdbID),
+    };
+  });
+
   return (
     <div>
       {refinedMovies ? (

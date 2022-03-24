@@ -6,7 +6,6 @@ import { useRecoilState } from "recoil";
 
 const Favorite = () => {
   const [favorites, setFavorites] = useRecoilState(favoriteSelector);
-  console.log(favorites);
 
   const reorder = (list, startIndex, endIndex) => {
     const result = Array.from(list);

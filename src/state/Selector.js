@@ -14,7 +14,6 @@ const itemQuery = selectorFamily({
     (page) =>
     ({ get }) => {
       const inputVal = get(inputState);
-      console.log("ItemQuery");
       return axios(
         `https://www.omdbapi.com/?apikey=${API_KEY}&s=${inputVal}&page=${
           page + 1
@@ -40,10 +39,10 @@ const favoriteSelector = selector({
   key: "favoriteSelector",
   get: ({ get }) => {
     let favorites = get(favoritesState);
-    if (favorites.length <= 0) {
+    if (favorites.length === 0) {
       favorites = JSON.parse(window.localStorage.getItem("favorites"));
     }
-    return favorites ? favorites : [];
+    return favorites || [];
   },
   set: ({ set }, newValue) => {
     window.localStorage.setItem("favorites", JSON.stringify(newValue));
