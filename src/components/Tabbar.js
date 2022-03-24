@@ -11,7 +11,14 @@ const Tabbar = () => {
         {routes.map((route) => {
           return (
             <div key={route.title}>
-              <Link to={route.path} className="tabbar-link">
+              <Link
+                to={route.path}
+                className={
+                  window.location.pathname === route.path
+                    ? "tabbar-link active"
+                    : "tabbar-link"
+                }
+              >
                 {route.title}
               </Link>
             </div>

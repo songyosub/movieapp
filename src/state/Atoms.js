@@ -19,7 +19,7 @@ const modalState = atom({
   key: "modal",
   default: {
     isOpen: false,
-    movie: {}
+    movie: {},
   },
 });
 
@@ -28,6 +28,10 @@ const favoritesState = atom({
   default: [],
 });
 
+const isEndState = atom({
+  key: "isEnd",
+  default: false,
+});
 const currentPageInternal = atom({
   key: "currentPage",
   default: 0,
@@ -37,6 +41,7 @@ export {
   inputState,
   moviesState,
   pageState,
+  isEndState,
   modalState,
   favoritesState,
   currentPageInternal,

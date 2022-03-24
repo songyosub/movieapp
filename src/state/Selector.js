@@ -39,8 +39,15 @@ const allItems = selector({
 const favoriteSelector = selector({
   key: "favoriteSelector",
   get: ({ get }) => {
-    const favorites = get(favoritesState);
-    return favorites;
+    let favorites = get(favoritesState);
+    if (favorites.length <= 0) {
+      favorites = JSON.parse(window.localStorage.getItem("favorites"));
+    }
+    return favorites ? favorites : [];
+  },
+  set: ({ set }, newValue) => {
+    window.localStorage.setItem("favorites", JSON.stringify(newValue));
+    set(favoritesState, newValue);
   },
 });
-export { allItems, useFetchMoreItems };
+export { allItems, useFetchMoreItems, favoriteSelector };

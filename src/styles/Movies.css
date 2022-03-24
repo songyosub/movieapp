@@ -2,3 +2,12 @@
   padding-top: 50px;
   padding-bottom: 50px;
 }
+.loading {
+  height: 90vh;
+}
+.hasError {
+  height: 90vh;
+}
+.target {
+  height: 200px;
+}

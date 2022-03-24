@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useFetchMoreItems, allItems } from "../state/Selector";
-import { inputState } from "../state/Atoms";
+import { currentPageInternal, isEndState } from "../state/Atoms";
 import { useRecoilValue, useRecoilState } from "recoil";
 import MovieCollection from "./MovieCollection";
 
@@ -8,9 +8,9 @@ import "../styles/Movies.css";
 const Movies = () => {
   //const movieList = useRecoilValue(MoviesSelector);
   const [target, setTarget] = useState(""); // target
-  //const [page, setPage] = useRecoilState(currentPage);
+  const page = useRecoilValue(currentPageInternal);
+  const [isEnd, setIsEnd] = useRecoilState(isEndState);
 
-  const inputVal = useRecoilValue(inputState);
   const itemLoadables = useRecoilValue(allItems);
   const fetchMoreItems = useFetchMoreItems();
   const onIntersect = async ([entry], observer) => {
@@ -34,17 +34,45 @@ const Movies = () => {
 
   return (
     <div className="movies">
-      {itemLoadables.map(
-        (itemLoadable, index) =>
-          ({
-            hasValue: (
-              <MovieCollection item={itemLoadable.contents} key={"col-" + index} />
-            ),
-            hasError: <div key={"col-" + index}>ERROR</div>,
-            loading: <div key={"col-" + index}>LOADING~!</div>,
-          }[itemLoadable.state])
+      {itemLoadables.map((itemLoadable, index) => {
+        switch (itemLoadable.state) {
+          case "hasValue":
+            if (itemLoadable.contents.data.Response === "True") {
+              if (page * 10 > itemLoadable.contents.data.totalResults) {
+                setIsEnd(true);
+              } else {
+                setIsEnd(false);
+              }
+            }
+            return (
+              <>
+                <MovieCollection
+                  item={itemLoadable.contents}
+                  key={"col-" + index}
+                />
+              </>
+            );
+          case "hasError":
+            return (
+              <div className="hasError" key={"col-" + index}>
+                "검색 결과가 없습니다."
+              </div>
+            );
+          case "loading":
+            return (
+              <div className="loading" key={"col-" + index}>
+                LOADING~!
+              </div>
+            );
+          default:
+            return "";
+        }
+      })}
+      {page >= 1 && !isEnd ? (
+        <div className="target" ref={setTarget}></div>
+      ) : (
+        <div>"검색 결과가 없습니다."</div>
       )}
-      {inputVal && <div ref={setTarget} />}
     </div>
   );
 };

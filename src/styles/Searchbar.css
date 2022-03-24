@@ -7,3 +7,14 @@
   background-color: rgb(150, 150, 150);
   z-index: 2;
 }
+.search-input {
+  width: 80%;
+  height: 70%;
+  margin: 4px 0 0 5px;
+  font-size: 1rem;
+}
+.search-button {
+  margin-left: 10px;
+  height: 75%;
+  width: 15%;
+}
